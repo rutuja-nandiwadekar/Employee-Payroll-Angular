@@ -4,7 +4,7 @@ import { AddEmployeeComponent } from './components/add-employee/add-employee.com
 import { HomePageComponent } from './components/home-page/home-page.component';
 
 const routes: Routes = [
-  { path: '', redirectTo: 'home-page', pathMatch: 'full' },
+  { path: '', redirectTo: 'home', pathMatch: 'full' },
   { path: 'home', component: HomePageComponent },
   { path: 'add-user', component: AddEmployeeComponent }
 ];
