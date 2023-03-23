@@ -3,7 +3,7 @@
 <div class="form-content">
 
     <!-- Employee payroll form  -->
-    <form class="form">
+    <form class="form" [formGroup]="employeeForm" (ngSubmit)="submitForm()">
 
         <!-- Form heading  -->
         <div class="form-head">Employee Payroll Form</div>
@@ -13,7 +13,12 @@
             <label class="label text" for="profile">Name </label>
             <mat-form-field class="example-full-width" appearance="outline">
                 <mat-label>Enter your name</mat-label>
-                <input type="name" class="input" matInput placeholder="Ex. Rutuja">
+                <input type="name" class="input" matInput placeholder="Ex. Rutuja" formControlName="name"
+                    maxlength="25">
+                <mat-hint align="end">{{fullName.value.length||0}}/25</mat-hint>
+                <mat-error *ngIf="myError('name', 'required')">This is a required field</mat-error>
+                <mat-error *ngIf="myError('name', 'minlength')">Name should contain at least 3 characters</mat-error>
+
             </mat-form-field>
         </div>
 
@@ -66,17 +71,19 @@
             <label class="label text" for="department">Department</label>
             <div *ngFor="let department of departments">
                 <mat-checkbox class="checkbox" type="checkbox" color="primary" [value]="department.value"
-                    [checked]="department.checked">
+                    [checked]="department.checked" (change)="onCheckboxChange($event)">
                     <label class="text">{{department.name}}</label>
                 </mat-checkbox>
             </div>
         </div>
 
+
         <!-- Salary -->
         <div class="row-content">
             <label class="label text" for="salary">Choose your Salary </label>
-            <mat-slider min="30000" max="50000" step="1000" showTickMarks discrete [displayWith]="formatLabel">
-                <input matSliderThumb>
+            <mat-slider min="30000" max="50000" step="1000" class="salary-input" (change)="updateSetting($event)"
+                #salaryOutput showTickMarks discrete formControlName="salary">
+                <input matSliderThumb formControlName="salary">
             </mat-slider>
         </div>
 
@@ -85,7 +92,7 @@
             <label class="label text" for="startDate"> Start Date </label>
             <mat-form-field class="example-full-width" appearance="fill">
                 <mat-label>Choose a date</mat-label>
-                <input matInput [matDatepicker]="picker">
+                <input matInput [matDatepicker]="picker" formControlName="startDate">
                 <mat-hint>MM/DD/YYYY</mat-hint>
                 <mat-datepicker-toggle matIconSuffix [for]="picker">
                     <mat-icon matDatepickerToggleIcon>keyboard_arrow_down</mat-icon>
@@ -109,9 +116,9 @@
             <!-- cancel button  -->
             <button mat-raised-button><a routerLink="/home">Cancel</a></button>
             <!-- submit button  -->
-            <button mat-raised-button type="submit" id="submitButton">Submit</button>
+            <button mat-raised-button [disabled]="employeeForm.invalid" type="submit" id="submitButton">Submit</button>
             <!-- reset button  -->
-            <button mat-raised-button type="reset">Reset</button>
+            <button mat-raised-button (click)="resetForm()" type="reset">Reset</button>
         </div>
 
     </form>
