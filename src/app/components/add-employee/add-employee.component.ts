@@ -1,6 +1,9 @@
 import { Component } from '@angular/core';
 import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatCheckboxChange } from '@angular/material/checkbox';
+import { Employee } from '../../model/Employee';
+import { HttpService } from '../../service/http.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-add-employee',
@@ -8,6 +11,9 @@ import { MatCheckboxChange } from '@angular/material/checkbox';
   styleUrls: ['./add-employee.component.scss']
 })
 export class AddEmployeeComponent {
+
+  public employee: Employee = new Employee();
+  employeeForm!: FormGroup
 
   departments: Array<any> = [
     { id: 1, name: "HR", value: "HR", checked: false },
@@ -19,9 +25,9 @@ export class AddEmployeeComponent {
   ngOnInit(): void {
   }
 
-  employeeForm!: FormGroup
-
-  constructor(private formBuilder: FormBuilder) {
+  constructor(private formBuilder: FormBuilder,
+    private httpService: HttpService,
+    private router: Router) {
 
     this.employeeForm = this.formBuilder.group({
       name: new FormControl('', [Validators.required,
@@ -44,14 +50,11 @@ export class AddEmployeeComponent {
     return this.employeeForm.get('name') as FormControl
   }
 
-
-
   submitForm() {
     console.log(this.employeeForm.value)
   }
 
   resetForm() {
-
     this.employeeForm = this.formBuilder.group({
       name: new FormControl(''),
       profilePic: new FormControl(''),

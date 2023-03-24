@@ -4,17 +4,17 @@
 <div class="main-content">
     <div class="header-content">
         <div class="emp-detail-text">
-            Employee Details
+            Employee Details <div class="emp-count">{{employeeCount}}</div>
         </div>
-        <a class="add-button" routerLink="/add-user">
-            + Add User</a>
+        <a class="add-button" routerLink="/add-user">+ Add User</a>
     </div>
 
     <div class="table-main">
         <table id="table-display" class="table">
+
             <thead>
                 <tr>
-                    <th></th>
+                    <th>Pic</th>
                     <th>Name</th>
                     <th>Gender</th>
                     <th>Department</th>
@@ -24,27 +24,28 @@
                 </tr>
             </thead>
 
-
             <tbody>
-                <tr>
+
+                <tr *ngFor="let employee of employeeList">
                     <td>
-                        <img class="profile" src="../../../assets/images/Ellipse -3.png" alt="">
+                        <img class="profile" src="{{employee.profilePic}}" alt="">
                     </td>
-                    <td>Rutuja</td>
-                    <td>Female</td>
+                    <td>{{employee.name}}</td>
+                    <td>{{employee.gender}}</td>
                     <td>
-                        <div class="dept-label">
-                            HR
+                        <div class="dept-label" *ngFor="let department of employee.department">
+                            {{department}}
                         </div>
                     </td>
-                    <td>50000</td>
-                    <td>20/7/2012</td>
+                    <td>{{employee.salary}}</td>
+                    <td>{{employee.startDate}}</td>
                     <td>
-                        <img class="icons" src="/../../assets/delete.png" alt="delete">
+                        <img id="" src="../../assets/icons/delete.pn" alt="delete">
                         &nbsp;
-                        <img class="icons" src="/../../assets/edit.png" alt="edit">
+                        <img id="" src="../../assets/icons/edit.pn" alt="edit">
                     </td>
                 </tr>
+
             </tbody>
 
         </table>
