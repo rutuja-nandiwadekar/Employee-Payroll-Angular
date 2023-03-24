@@ -51,7 +51,12 @@ export class AddEmployeeComponent {
   }
 
   submitForm() {
+    this.employee = this.employeeForm.value;
     console.log(this.employeeForm.value)
+    this.httpService.addEmployee(this.employee).subscribe(response => {
+      console.log(response);
+      this.router.navigateByUrl("/home");
+    });
   }
 
   resetForm() {

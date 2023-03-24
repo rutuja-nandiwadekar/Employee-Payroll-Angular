@@ -37,8 +37,8 @@
                             {{department}}
                         </div>
                     </td>
-                    <td>{{employee.salary}}</td>
-                    <td>{{employee.startDate}}</td>
+                    <td>{{employee.salary | currency:'INR'}}</td>
+                    <td>{{employee.startDate | date: 'dd MMM yyyy'}}</td>
                     <td>
                         <img id="" src="../../assets/icons/delete.pn" alt="delete"
                             (click)="delete(employee.employeeId)">

@@ -18,6 +18,10 @@ export class HttpService {
     return this.httpClient.get(this.baseUrl + "get");
   }
 
+  addEmployee(body: any): Observable<any> {
+    return this.httpClient.post(this.baseUrl + "create", body);
+  }
+
   deleteEmployeeData(employeeId: number): Observable<any> {
     return this.httpClient.delete(this.baseUrl + "delete/" + employeeId);
   }
