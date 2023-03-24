@@ -40,7 +40,8 @@
                     <td>{{employee.salary}}</td>
                     <td>{{employee.startDate}}</td>
                     <td>
-                        <img id="" src="../../assets/icons/delete.pn" alt="delete">
+                        <img id="" src="../../assets/icons/delete.pn" alt="delete"
+                            (click)="delete(employee.employeeId)">
                         &nbsp;
                         <img id="" src="../../assets/icons/edit.pn" alt="edit">
                     </td>

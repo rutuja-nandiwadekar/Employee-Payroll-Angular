@@ -18,4 +18,8 @@ export class HttpService {
     return this.httpClient.get(this.baseUrl + "get");
   }
 
+  deleteEmployeeData(employeeId: number): Observable<any> {
+    return this.httpClient.delete(this.baseUrl + "delete/" + employeeId);
+  }
+
 }

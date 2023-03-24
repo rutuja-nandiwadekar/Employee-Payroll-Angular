@@ -15,12 +15,19 @@ export class HomePageComponent {
   constructor(private httpService: HttpService) { }
 
   ngOnInit(): void {
-
     this.httpService.getEmployeeData().subscribe(response => {
       this.employeeList = response.data;
       this.employeeCount = this.employeeList.length;
       console.log(this.employeeList);
     })
+  }
+
+  delete(employeeId: number): void {
+    console.log(employeeId)
+    this.httpService.deleteEmployeeData(employeeId).subscribe(response => {
+      console.log(response);
+      this.ngOnInit();
+    });
   }
 
 }
