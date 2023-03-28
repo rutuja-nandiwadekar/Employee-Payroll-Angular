@@ -1,19 +1,22 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatCheckboxChange } from '@angular/material/checkbox';
 import { Employee } from '../../model/Employee';
 import { HttpService } from '../../service/http.service';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
+import { DataService } from '../../service/data.service';
+
 
 @Component({
   selector: 'app-add-employee',
   templateUrl: './add-employee.component.html',
   styleUrls: ['./add-employee.component.scss']
 })
-export class AddEmployeeComponent {
+export class AddEmployeeComponent implements OnInit {
 
   public employee: Employee = new Employee();
   employeeForm!: FormGroup
+  employeeId: number = this.activatedRoute.snapshot.params['employeeId'];
 
   departments: Array<any> = [
     { id: 1, name: "HR", value: "HR", checked: false },
@@ -22,12 +25,12 @@ export class AddEmployeeComponent {
     { id: 4, name: "Engineer", value: "Engineer", checked: false },
     { id: 5, name: "Other", value: "Other", checked: false }
   ]
-  ngOnInit(): void {
-  }
 
   constructor(private formBuilder: FormBuilder,
     private httpService: HttpService,
-    private router: Router) {
+    private router: Router,
+    private dataService: DataService,
+    private activatedRoute: ActivatedRoute) {
 
     this.employeeForm = this.formBuilder.group({
       name: new FormControl('', [Validators.required,
@@ -39,7 +42,6 @@ export class AddEmployeeComponent {
       salary: new FormControl('', Validators.required),
       startDate: new FormControl('', Validators.required),
       note: new FormControl('', Validators.required)
-
     })
   }
 
@@ -52,13 +54,41 @@ export class AddEmployeeComponent {
 
   submitForm() {
     this.employee = this.employeeForm.value;
-    console.log(this.employeeForm.value)
-    this.httpService.addEmployee(this.employee).subscribe(response => {
-      console.log(response);
-      this.router.navigateByUrl("/home");
-    });
+    if (this.employeeId != undefined) {
+      this.httpService.updateEmployeeData(this.employeeId, this.employee).subscribe(response => {
+        this.router.navigateByUrl("/home");
+      });
+    } else {
+      this.employee = this.employeeForm.value;
+      this.httpService.addEmployee(this.employee).subscribe(response => {
+        this.router.navigateByUrl("/home");
+      });
+    }
   }
 
+  ngOnInit(): void {
+    console.log(this.employeeId);
+    if (this.employeeId != undefined) {
+      this.dataService.currentEmployee.subscribe(employee => {
+
+        this.employeeForm.get('name')?.setValue(employee.name);
+        this.employeeForm.get('profilePic')?.setValue(employee.profilePic);
+        this.employeeForm.get('gender')?.setValue(employee.gender);
+        this.employeeForm.get('salary')?.setValue(employee.salary);
+        this.employeeForm.get('startDate')?.setValue(employee.startDate);
+        this.employeeForm.get('note')?.setValue(employee.note);
+
+        const department: FormArray = this.employeeForm.get('department') as FormArray;
+        employee.department.forEach(departmentData => {
+          for (let index = 0; index < this.departments.length; index++) {
+            if (this.departments[index].name === departmentData) {
+              this.departments[index].checked = true;
+            }
+          }
+        })
+      })
+    }
+  }
   resetForm() {
     this.employeeForm = this.formBuilder.group({
       name: new FormControl(''),
@@ -97,7 +127,6 @@ export class AddEmployeeComponent {
   updateSetting(event: any) {
     this.salary = event.value;
   }
-
 
   formatLabel(value: number) {
     if (value >= 1000) {

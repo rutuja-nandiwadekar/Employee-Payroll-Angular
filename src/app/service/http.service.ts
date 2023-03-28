@@ -26,4 +26,8 @@ export class HttpService {
     return this.httpClient.delete(this.baseUrl + "delete/" + employeeId);
   }
 
+  updateEmployeeData(employeeId: number, body: any): Observable<any> {
+    return this.httpClient.put(this.baseUrl + "update/" + employeeId, body);
+  }
+
 }

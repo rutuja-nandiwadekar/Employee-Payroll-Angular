@@ -14,7 +14,7 @@
 
             <thead>
                 <tr>
-                    <th>Pic</th>
+                    <th></th>
                     <th>Name</th>
                     <th>Gender</th>
                     <th>Department</th>
@@ -40,10 +40,11 @@
                     <td>{{employee.salary | currency:'INR'}}</td>
                     <td>{{employee.startDate | date: 'dd MMM yyyy'}}</td>
                     <td>
-                        <img id="" src="../../assets/icons/delete.pn" alt="delete"
+                        <img id={{employee.employeeId}} src="../../assets/icons/delete.png" alt="delete"
                             (click)="delete(employee.employeeId)">
                         &nbsp;
-                        <img id="" src="../../assets/icons/edit.pn" alt="edit">
+                        <img id={{employee.employeeId}} src="../../assets/icons/edit.png" alt="edit"
+                            (click)="update(employee)">
                     </td>
                 </tr>
 

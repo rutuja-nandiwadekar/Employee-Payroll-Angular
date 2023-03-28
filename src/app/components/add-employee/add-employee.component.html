@@ -84,7 +84,7 @@
         <div class="row-content">
             <label class="label text" for="salary">Choose your Salary </label>
             <mat-slider min="30000" max="50000" step="1000" class="salary-input" (change)="updateSetting($event)"
-                #salaryOutput showTickMarks discrete formControlName="salary">
+                #salaryOutput showTickMarks discrete formControlName="salary" ngDefaultControl>
                 <input matSliderThumb formControlName="salary">
             </mat-slider>
         </div>
